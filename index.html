@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <title>RUMOAR — Who are you today?</title>
+    <meta name="description" content="A digital concept store that helps you discover your style, curate your identity and shop the objects that make it yours. Every great brand starts as a rumour." />
+
+    <link rel="canonical" href="https://rumoar.com/" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="dark light" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="RUMOAR" />
+    <meta property="og:title" content="RUMOAR — Who are you today?" />
+    <meta property="og:description" content="A small, deliberate system of objects for the way you want to be read. Every great brand starts as a rumour." />
+    <meta property="og:image" content="/media/og.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- The card, inline. No file to upload, nothing to 404 on a fresh deploy. -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23000000'/%3E%3Ctext x='32' y='46' font-family='Georgia,serif' font-size='44' font-weight='700' text-anchor='middle' fill='%23FF5722'%3ER%3C/text%3E%3C/svg%3E" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Brand",
+        "name": "RUMOAR",
+        "slogan": "Every great brand starts as a rumour.",
+        "description": "A digital concept store of curated objects, exclusive drops and everyday essentials.",
+        "url": "https://rumoar.com/"
+      }
+    </script>
+
+    <style>
+      /* The ground is painted before React boots. Without this the first paint
+         is a white flash under a page that is almost entirely dark — the one
+         frame everybody notices. */
+      html { background: #000000; }
+      body { margin: 0; background: #000000; }
+      /* Held by the boot sequence and released in JS, never by CSS alone: if
+         the bundle fails to execute, the page must still scroll. */
+      body.boot-lock { overflow: hidden; }
+      /* No smooth scroll here. It fights every scrubbed section on the page. */
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <div style="font:500 16px/1.6 system-ui;color:#F4F3F1;max-width:38rem;margin:14vh auto;padding:0 6vw">
+        <p style="font:700 1.6rem/1.1 Georgia,serif;color:#FF5722">RUMOAR</p>
+        <p>A small, deliberate system of objects for the way you want to be read.</p>
+        <p>This page uses JavaScript for its motion. The shop works without it —
+          <a style="color:#FF5722" href="https://h6s-3afeb4f20280dc-shreyashm36240.wix-site-host.com">the shop</a>.</p>
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
