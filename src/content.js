@@ -76,7 +76,7 @@ export const INTRO = {
     { tiles: 3, cut: 260, hold: 2400, line: "before you speak." },
     { tiles: 7, cut: 150, hold: 2600, line: "Six seconds." },
     { tiles: 12, cut: 90, hold: 2400, line: "That's the whole conversation." },
-    { tiles: 20, cut: 60, hold: 2200, line: "Every great brand" },
+    { tiles: 15, cut: 60, hold: 2200, line: "Every great brand" },
     { tiles: 7, cut: 190, hold: 2000, line: "starts as a rumour." },
     { tiles: 0, cut: 400, hold: 2600, line: "" },
   ],
