@@ -162,66 +162,108 @@ export const CSS = `
 .rl .link:hover::after{transform:scaleX(1);transform-origin:left}
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   §5  THE LOADER — the viewfinder gate
+   §5  THE INTRO — the title sequence
 
-   A column of frames runs up through a bracketed gate while a counter races
-   0→100. Corner labels sit like a camera HUD. It is dark, quiet, and made of
-   the same film the site is made of — no spinner, no percentage bar dressed
-   up as a brand moment.
+   Long, dark, cinematic. A viewfinder gate with a column of film assembling
+   through it, a single line of type retuning act by act, and the wordmark
+   resolving out of it before a bar of light wipes the whole thing away. Every
+   position is written from JS off one clock; this file only paints.
    ═══════════════════════════════════════════════════════════════════════════ */
-.rl .load{position:fixed;inset:0;z-index:var(--z-boot);background:var(--ground);
-  overflow:hidden;transition:opacity 700ms var(--ez),visibility 700ms}
-.rl .load.gone{opacity:0;visibility:hidden;pointer-events:none}
+.rl .ld{position:fixed;inset:0;z-index:var(--z-boot);background:var(--ground);
+  overflow:hidden;transition:opacity 900ms var(--ez),visibility 900ms;--pct:0}
+.rl .ld.gone{opacity:0;visibility:hidden;pointer-events:none}
+/* a slow, ever-present drift of light so the black is never dead */
+.rl .ld::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:radial-gradient(ellipse 60% 50% at 50% 46%,rgba(255,255,255,.05),transparent 70%);
+  animation:ldbreathe 6s ease-in-out infinite}
+@keyframes ldbreathe{0%,100%{opacity:.5}50%{opacity:1}}
+/* a fine vignette to seat the frame in the dark */
+.rl .ld::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:6;
+  background:radial-gradient(ellipse 90% 80% at 50% 50%,transparent 52%,rgba(0,0,0,.6))}
 
-.rl .load-hud{position:absolute;inset:0;z-index:4;pointer-events:none}
-.rl .load-hud span{position:absolute;color:var(--bone-3);letter-spacing:.08em}
-.rl .load-tl{top:var(--marg);left:var(--marg)}
-.rl .load-tr{top:var(--marg);right:var(--marg)}
-.rl .load-bl{bottom:var(--marg);left:var(--marg)}
-.rl .load-br{bottom:var(--marg);right:var(--marg)}
-@media(max-width:600px){
-  .rl .load-tl,.rl .load-tr,.rl .load-bl,.rl .load-br{font-size:.5rem}
-}
+.rl .ld-hud{position:absolute;inset:0;z-index:5;pointer-events:none}
+.rl .ld-hud span{position:absolute;color:var(--bone-3);letter-spacing:.14em;
+  opacity:0;animation:ldhud 1s var(--ez) .3s forwards}
+@keyframes ldhud{to{opacity:1}}
+.rl .ld-tl{top:var(--marg);left:var(--marg)}
+.rl .ld-tr{top:var(--marg);right:var(--marg)}
+.rl .ld-bl{bottom:var(--marg);left:var(--marg)}
+.rl .ld-br{bottom:var(--marg);right:var(--marg)}
+@media(max-width:600px){.rl .ld-hud span{font-size:.5rem}}
 
-/* the frame column, centred, scrolling up */
-.rl .load-reel{position:absolute;inset:0;display:grid;place-items:center;z-index:2}
-.rl .load-col{display:grid;gap:14px;width:min(46vw,440px);will-change:transform}
-@media(max-width:820px){.rl .load-col{width:min(74vw,420px)}}
-.rl .load-fr{aspect-ratio:16/10;overflow:hidden;background:var(--ground-2);
+/* the seed mark, alone at the very start */
+.rl .ld-seed{position:absolute;top:50%;left:50%;z-index:4;
+  transform:translate(-50%,-50%);margin:-.05em 0 0 0;
+  font-family:var(--f-display);font-weight:800;font-size:clamp(3rem,9vw,7rem);
+  letter-spacing:-.05em;color:var(--bone);
+  translate:-50% -50%}
+/* seed is positioned by JS scale/opacity; keep it centred via translate above.
+   (translate + transform both apply; transform carries the animated scale.) */
+.rl .ld-seed{left:calc(50% - .5ch)}
+
+/* the frame column + gate */
+.rl .ld-reel{position:absolute;inset:0;z-index:2;display:grid;place-items:center}
+.rl .ld-col{display:grid;gap:14px;width:min(42vw,420px);will-change:transform,opacity}
+@media(max-width:820px){.rl .ld-col{width:min(76vw,400px)}}
+.rl .ld-fr{aspect-ratio:16/10;overflow:hidden;background:var(--ground-2);
   border:1px solid var(--line)}
-.rl .load-fr img,.rl .load-fr video{width:100%;height:100%;object-fit:cover;
-  filter:grayscale(.4) contrast(1.05)}
+.rl .ld-fr img[data-failed]{display:none}
+.rl .ld-fr img,.rl .ld-fr video{width:100%;height:100%;object-fit:cover;
+  filter:grayscale(.35) contrast(1.06)}
 
-/* the gate: four corner brackets around the centre frame */
-.rl .load-gate{position:absolute;top:50%;left:50%;width:min(46vw,440px);
-  aspect-ratio:16/10;transform:translate(-50%,-50%);z-index:3;pointer-events:none}
-@media(max-width:820px){.rl .load-gate{width:min(74vw,420px)}}
-.rl .load-gate i{position:absolute;width:16px;height:16px;border:1.5px solid var(--bone)}
-.rl .load-gate i:nth-child(1){top:-1px;left:-1px;border-right:0;border-bottom:0}
-.rl .load-gate i:nth-child(2){top:-1px;right:-1px;border-left:0;border-bottom:0}
-.rl .load-gate i:nth-child(3){bottom:-1px;left:-1px;border-right:0;border-top:0}
-.rl .load-gate i:nth-child(4){bottom:-1px;right:-1px;border-left:0;border-top:0}
+.rl .ld-gate{position:absolute;top:50%;left:50%;width:min(42vw,420px);
+  aspect-ratio:16/10;z-index:3;pointer-events:none;
+  transform:translate(-50%,-50%);will-change:transform,opacity}
+@media(max-width:820px){.rl .ld-gate{width:min(76vw,400px)}}
+.rl .ld-gate i{position:absolute;width:18px;height:18px;border:1.5px solid var(--bone)}
+.rl .ld-gate i:nth-child(1){top:-1px;left:-1px;border-right:0;border-bottom:0}
+.rl .ld-gate i:nth-child(2){top:-1px;right:-1px;border-left:0;border-bottom:0}
+.rl .ld-gate i:nth-child(3){bottom:-1px;left:-1px;border-right:0;border-top:0}
+.rl .ld-gate i:nth-child(4){bottom:-1px;right:-1px;border-left:0;border-top:0}
 
-/* the two centre-line labels — the ones that read [ THE WARDROBE ] / [ 042 ] */
-.rl .load-bar-l,.rl .load-bar-r{position:absolute;top:50%;transform:translateY(-50%);
-  z-index:4;color:var(--bone-3);letter-spacing:.1em;white-space:nowrap}
-.rl .load-bar-l{left:var(--marg)}
-.rl .load-bar-r{right:var(--marg)}
-.rl .load-bar-l span{color:var(--bone-2)}
-.rl .load-bar-r .num{color:var(--bone);font-size:1.05rem;letter-spacing:.04em}
+/* the retuning line, above the gate */
+.rl .ld-line{position:absolute;left:50%;top:calc(50% - min(42vw,420px) * .32 - 66px);
+  transform:translateX(-50%);z-index:5;text-align:center;white-space:nowrap;
+  font-weight:400;font-size:clamp(1.3rem,3.6vw,2.6rem);letter-spacing:-.01em;
+  color:var(--bone);opacity:0}
+@media(max-width:820px){.rl .ld-line{top:calc(50% - min(76vw,400px) * .32 - 54px);
+  font-size:clamp(1.1rem,5vw,1.7rem)}}
+
+/* the wordmark it resolves into */
+.rl .ld-lock{position:absolute;inset:0;z-index:5;display:grid;place-content:center;
+  justify-items:center;gap:clamp(12px,2.2vh,24px);pointer-events:none;opacity:0}
+.rl .ld-mark{display:flex;justify-content:center;overflow:hidden;
+  font-family:var(--f-display);font-weight:800;line-height:.9;
+  font-size:clamp(3rem,15vw,12rem);letter-spacing:-.055em;color:var(--bone)}
+.rl .ld-mark span{display:inline-block;transform:translateY(108%);will-change:transform}
+.rl .ld-mark span:last-child{color:var(--mark)}
+.rl .ld-tag{color:var(--bone-3);letter-spacing:.16em;text-transform:uppercase;opacity:0}
+
+/* centre-line labels */
+.rl .ld-gateL,.rl .ld-count{position:absolute;top:50%;transform:translateY(-50%);
+  z-index:5;color:var(--bone-3);letter-spacing:.12em;white-space:nowrap}
+.rl .ld-gateL{left:var(--marg)}
+.rl .ld-count{right:var(--marg)}
+.rl .ld-gateL span{color:var(--bone-2)}
+.rl .ld-count .num{color:var(--bone);font-size:1.1rem;letter-spacing:.05em}
 @media(max-width:820px){
-  .rl .load-bar-l{display:none}
-  .rl .load-bar-r{top:auto;bottom:calc(var(--marg) + 40px);transform:none}
+  .rl .ld-gateL{display:none}
+  .rl .ld-count{top:auto;bottom:calc(var(--marg) + 44px);transform:none}
 }
 
-/* the foot: the resolving word and the count bar */
-.rl .load-foot{position:absolute;left:var(--marg);right:var(--marg);
-  bottom:calc(var(--marg) + clamp(30px,6vh,60px));z-index:4;
-  display:grid;gap:10px;justify-items:center}
-.rl .load-word{color:var(--bone-2);letter-spacing:.24em;text-transform:uppercase}
-.rl .load-track{width:min(280px,60vw);height:1px;background:var(--line-2)}
-.rl .load-track i{display:block;height:100%;background:var(--bone);
-  transform-origin:left;transform:scaleX(0)}
+/* progress hairline + skip */
+.rl .ld-bar{position:absolute;left:var(--marg);right:var(--marg);
+  bottom:calc(var(--marg) + clamp(28px,5vh,50px));z-index:5;height:1px;background:var(--line-2)}
+.rl .ld-bar i{display:block;height:100%;background:var(--bone);transform-origin:left;transform:scaleX(0)}
+.rl .ld-skip{position:absolute;right:var(--marg);
+  bottom:calc(var(--marg) + clamp(28px,5vh,50px) + 12px);z-index:6;
+  color:var(--bone-3);letter-spacing:.14em;text-transform:uppercase;
+  opacity:0;animation:ldhud 1s var(--ez) 1.2s forwards}
+.rl .ld-skip:hover{color:var(--bone)}
+
+/* the wipe that hands the page over */
+.rl .ld-wipe{position:absolute;inset:0;z-index:7;background:var(--bone);
+  transform-origin:bottom;transform:scaleY(0);pointer-events:none}
 
 /* ═══════════════════════════════════════════════════════════════════════════
    §6  NAV
